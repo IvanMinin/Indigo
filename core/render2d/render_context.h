@@ -208,7 +208,7 @@ namespace indigo
         bool metafileFontsToCurves;
         cairo_t* _cr;
         cairo_surface_t* _surface;
-        cairo_font_face_t* _cairo_face;
+        cairo_font_face_t* _cairo_face = nullptr;
         FT_Library  library;
         FT_Face     face;
         void* _meta_hdc;
