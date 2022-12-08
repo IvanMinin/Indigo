@@ -207,7 +207,7 @@ if(WIN32)
     target_link_libraries(${PROJECT_NAME} PUBLIC msimg32 gdi32)
 endif()
 if(UNIX AND NOT APPLE)
-    target_link_libraries(${PROJECT_NAME} PUBLIC freetype fontconfig)
+    target_link_libraries(${PROJECT_NAME} PUBLIC freetype)
 endif()
 
 message(STATUS "Using local version of ${PROJECT_NAME}")
