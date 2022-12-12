@@ -290,19 +290,8 @@ void RenderContext::init()
 
     {
         std::lock_guard<std::mutex> _lock(_cairo_mutex);
-        int error = FT_Init_FreeType(&library);
-        if (error)
-        {
-            throw std::runtime_error("error loading freetype");
-        }
-        error = FT_New_Memory_Face(library, sans_regular, sans_regular_size, 0, &face);
-        if (error)
-        {
-            throw std::runtime_error("error loading font");
-        }
-        _cairo_face = cairo_ft_font_face_create_for_ft_face(face, 0x0);
+        cairo_select_font_face(_cr, _fontfamily.ptr(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
         cairoCheckStatus();
-        cairo_set_font_face(_cr, _cairo_face);
         cairo_set_font_size(_cr, _settings.fzz[FONT_SIZE_ATTR]);
         cairoCheckStatus();
         cairo_text_extents(_cr, "N", &te);
