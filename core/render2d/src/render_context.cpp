@@ -25,7 +25,10 @@
 #include <cairo-ft.h>
 #include <freetype/freetype.h>
 
-#include "sans.h"
+#include "sans_regular.h"
+#include "sans_italic.h"
+#include "sans_bold.h"
+#include "sans_bold_italic.h"
 
 using namespace indigo;
 
@@ -292,7 +295,7 @@ void RenderContext::init()
         {
             throw std::runtime_error("error loading freetype");
         }
-        error = FT_New_Memory_Face(library, sans, sans_size, 0, &face);
+        error = FT_New_Memory_Face(library, sans_regular, sans_regular_size, 0, &face);
         if (error)
         {
             throw std::runtime_error("error loading font");

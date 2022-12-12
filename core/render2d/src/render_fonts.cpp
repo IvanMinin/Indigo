@@ -23,7 +23,10 @@
 #include <cairo-ft.h>
 #include <freetype/freetype.h>
 
-#include "sans.h"
+#include "sans_regular.h"
+#include "sans_italic.h"
+#include "sans_bold.h"
+#include "sans_bold_italic.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -128,14 +131,14 @@ void RenderContext::fontsSetFont(const TextItem& ti)
     {
         throw std::runtime_error("error loading freetype");
     }
-    error = FT_New_Memory_Face(library, sans, sans_size, 0, &face);
+    error = FT_New_Memory_Face(library, sans_regular, sans_regular_size, 0, &face);
     if (error)
     {
         throw std::runtime_error("error loading font");
     }
     _cairo_face = cairo_ft_font_face_create_for_ft_face(face, 0x0);
     cairoCheckStatus();
-    
+
     cairo_set_font_face(_cr, _cairo_face);
     cairoCheckStatus();
     cairo_set_font_size(_cr, ti.size > 0 ? ti.size : fontGetSize(ti.fontsize));
