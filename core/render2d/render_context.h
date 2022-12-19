@@ -19,6 +19,8 @@
 #ifndef __render_context_h__
 #define __render_context_h__
 
+#include "render_ft_font_manager.h"
+
 #include <cairo-pdf.h>
 #include <cairo-svg.h>
 #include <cairo.h>
@@ -209,8 +211,9 @@ namespace indigo
         cairo_t* _cr;
         cairo_surface_t* _surface;
         cairo_font_face_t* _cairo_face = nullptr;
-        FT_Library  library;
-        FT_Face     face;
+
+        RenderFTFontManager _ftFontManager;
+
         void* _meta_hdc;
 
     public:

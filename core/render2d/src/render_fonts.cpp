@@ -21,12 +21,6 @@
 #include "render_context.h"
 
 #include <cairo-ft.h>
-#include <freetype/freetype.h>
-
-#include "sans_regular.h"
-#include "sans_italic.h"
-#include "sans_bold.h"
-#include "sans_bold_italic.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -110,33 +104,10 @@ double RenderContext::fontGetSize(FONT_SIZE size)
     return _settings.fzz[size];
 }
 
-#if 0
 void RenderContext::fontsSetFont(const TextItem& ti)
 {
     std::lock_guard<std::mutex> _lock(_cairo_mutex);
-    // TODO: add italic and bold fonts
-    cairo_set_font_face(_cr, _cairo_face);
-    cairoCheckStatus();
-    cairo_set_font_size(_cr, ti.size > 0 ? ti.size : fontGetSize(ti.fontsize));
-    cairoCheckStatus();
-}
-#else
-void RenderContext::fontsSetFont(const TextItem& ti)
-{
-    std::lock_guard<std::mutex> _lock(_cairo_mutex);
-    // TODO: add italic and bold fonts
-
-    int error = FT_Init_FreeType(&library);
-    if (error)
-    {
-        throw std::runtime_error("error loading freetype");
-    }
-    error = FT_New_Memory_Face(library, sans_regular, sans_regular_size, 0, &face);
-    if (error)
-    {
-        throw std::runtime_error("error loading font");
-    }
-    _cairo_face = cairo_ft_font_face_create_for_ft_face(face, 0x0);
+    _cairo_face = _ftFontManager.selectCairoFontFace(ti.bold, ti.italic);
     cairoCheckStatus();
 
     cairo_set_font_face(_cr, _cairo_face);
@@ -144,7 +115,6 @@ void RenderContext::fontsSetFont(const TextItem& ti)
     cairo_set_font_size(_cr, ti.size > 0 ? ti.size : fontGetSize(ti.fontsize));
     cairoCheckStatus();
 }
-#endif
 
 void RenderContext::fontsGetTextExtents(cairo_t* cr, const char* text, int size, float& dx, float& dy, float& rx, float& ry)
 {
